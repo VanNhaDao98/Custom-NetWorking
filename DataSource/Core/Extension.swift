@@ -35,3 +35,37 @@ extension Dictionary {
         return newDict
     }
 }
+
+extension URLRequest {
+    
+    /**
+     Returns a cURL command representation of this URL request.
+     */
+    var curlString: String? {
+        guard let url = url, let method = HTTPMethod(rawValue: httpMethod ?? "") else { return nil }
+        var baseCommand = #"curl -L "\#(url.absoluteString)""#
+        
+        if method == .head {
+            baseCommand += " --head"
+        }
+        
+        var command = [baseCommand]
+        
+        if method != .head {
+            command.append("-X \(method.rawValue.uppercased())")
+        }
+        
+        if let headers = allHTTPHeaderFields {
+            for (key, value) in headers {
+                command.append("-H '\(key): \(value)'")
+            }
+        }
+        
+        if let data = httpBody, let body = String(data: data, encoding: .utf8) {
+            let escapedBody = body.replacingOccurrences(of: "'", with: "'\\''")
+            command.append("-d '\(escapedBody)'")
+        }
+        
+        return command.joined(separator: " \\\n\t")
+    }
+}
