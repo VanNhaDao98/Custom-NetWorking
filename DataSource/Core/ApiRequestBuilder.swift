@@ -8,6 +8,6 @@
 import Foundation
 
 
-protocol ApiRequestBuilder {
+public protocol ApiRequestBuilder {
     var requestBuilder: URLRequestBuilder { get }
 }

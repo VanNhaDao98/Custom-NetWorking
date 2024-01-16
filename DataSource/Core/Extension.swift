@@ -69,3 +69,15 @@ extension URLRequest {
         return command.joined(separator: " \\\n\t")
     }
 }
+
+extension HTTPURLResponse {
+    var status: HTTPStatusCode? {
+        return HTTPStatusCode(rawValue: statusCode)
+    }
+}
+
+extension URLResponse {
+    var statusCode: HTTPStatusCode? {
+        return (self as? HTTPURLResponse)?.status
+    }
+}

@@ -6,12 +6,21 @@
 //
 
 import UIKit
+import DataSource
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        Repository.shared.weather.getWeather { result in
+            switch result {
+            case .success(let success):
+                print(success.data as WeatherModel)
+            case .failure(let failure):
+                print(failure)
+            }
+        }
     }
 
 

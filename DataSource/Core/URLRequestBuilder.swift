@@ -7,7 +7,7 @@
 
 import Foundation
 
-class URLRequestBuilder {
+public class URLRequestBuilder {
     
     private var endPoint: ApiServiceEndpoint
     
@@ -22,18 +22,20 @@ class URLRequestBuilder {
     }
     
     private func generateUrlComponent(path: String, params: ParameterType?) -> URL {
-        var components = URLComponents()
         let (host, basePath) = endPoint.components
         
-        components.scheme = endPoint.scheme
-        components.host = host
-        components.path = basePath + path
-        components.queryItems = params?.map { URLQueryItem(name: $0.key, value: $0.value)}
+        let urlString = endPoint.scheme + host + basePath + path
+//        components.scheme = endPoint.scheme
+//        components.host = host
+//        components.path = basePath + path
         
-        components.percentEncodedQuery = components.percentEncodedQuery?
-            .replacingOccurrences(of: "+", with: "%2B")
+        var components = URLComponents(string: urlString)
+        components?.queryItems = params?.map { URLQueryItem(name: $0.key, value: $0.value)}
         
-        return components.url!
+//        components?.percentEncodedQuery = components?.percentEncodedQuery?
+//            .replacingOccurrences(of: "+", with: "%2B")
+        
+        return (components?.url)!
     }
     
     private func buildHeader(header: [HttpHeaderKey: String]?) -> [String: String] {

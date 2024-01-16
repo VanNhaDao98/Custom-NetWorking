@@ -27,7 +27,7 @@ enum ApiServiceEndpoint: ApiServiceEndpointType {
     var scheme: String {
         switch self {
         default:
-            return "https"
+            return "https:"
         }
     }
 }
