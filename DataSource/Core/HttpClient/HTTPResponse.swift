@@ -7,9 +7,9 @@
 
 import Foundation
 
-class HTTPResponse<D> {
-    let data: D
-    let response: HTTPURLResponse
+public class HTTPResponse<D> {
+    public var data: D
+    public var response: HTTPURLResponse
     
     init(data: D,
          response: HTTPURLResponse) {

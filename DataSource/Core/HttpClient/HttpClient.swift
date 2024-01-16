@@ -26,15 +26,16 @@ class HttpClient {
                                                          qos: .default,
                                                          attributes: .concurrent,
                                                          target: .global())
-    
-    private func dataTask< R: Decodable>(request: URLRequest,
+    @discardableResult
+    public func dataTask< R: Decodable>(request: URLRequest,
                                          completion: @escaping DataTaskComplete<R>) -> Cancellable {
         return self.dataTask(request: request,
                              body: nil as EmptySendingData?,
                              completion: completion)
     }
     
-    private func dataTask<T: Encodable, R: Decodable>(request: URLRequest,
+    @discardableResult
+    public func dataTask<T: Encodable, R: Decodable>(request: URLRequest,
                                                       body: T?,
                                                       completion: @escaping DataTaskComplete<R>) -> Cancellable {
         return self.dataTask(request: request,
@@ -85,8 +86,85 @@ class HttpClient {
                                               bodyDecoding: @escaping (Data) throws  -> R,
                                               completion: @escaping DataTaskComplete<R>) {
         
-        // xu ly sau
+        let (data, response, error) = responseData
         
+        func onCompletion(_ result: Result<HTTPResponse<R>, Error>) {
+            DispatchQueue.main.async {
+                completion(result)
+            }
+        }
+        
+        let requestUrl = request.url?.absoluteString ?? ""
+        
+        if let error = error {
+            onCompletion(.failure(error))
+          return
+        }
+        
+        guard let data = data else {
+            onCompletion(.failure(HTTPResponseError.missingReturnData))
+            return
+        }
+        
+        guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
+            onCompletion(.failure(HTTPResponseError.missingStatusCode))
+            return
+        }
+        
+        switch statusCode.responseType {
+        case .informational, .success:
+            handleSuccessResponse(requestUrl: requestUrl,
+                                  response: response,
+                                  receivedData: data,
+                                  responseDecoder: bodyDecoding,
+                                  completion: completion)
+        default:
+            onCompletion(.failure(HTTPResponseError.status(status: statusCode, data: data)))
+        }
+        
+    }
+    
+    private func handleSuccessResponse<R>(requestUrl: String,
+                                          response: URLResponse?,
+                                          receivedData: Data,
+                                          responseDecoder: @escaping (Data) throws -> R,
+                                          completion: @escaping DataTaskComplete<R>) where R: Decodable {
+        func onComplete(_ result: Result<HTTPResponse<R>, Error>) {
+            DispatchQueue.main.async {
+                completion(result)
+            }
+        }
+        
+        guard let response = response as? HTTPURLResponse else {
+            onComplete(.failure(HTTPResponseError.undefined))
+            return
+        }
+        
+//        func handleTextPlainResponse() -> Bool {
+//            guard let contentType = response.headerValue(forKey: .contentType) as? String,
+//                  contentType == HttpContentType.textPlain else {
+//                return false
+//            }
+//            
+//            if let string = String(data: receivedData, encoding: .utf8) as? R {
+//                onComplete(.success(.init(data: string, response: response)))
+//                return true
+//            }
+//            
+//            return false
+//        }
+        
+        if let empty = EmptyResponse() as? R {
+            onComplete(.success(.init(data: empty, response: response)))
+            return
+        }
+        
+        do {
+            let parsedObject = try responseDecoder(receivedData)
+            onComplete(.success(.init(data: parsedObject, response: response)))
+        } catch {
+            onComplete(.failure(HTTPResponseError.decodeDataFailed))
+        }
     }
 }
 
