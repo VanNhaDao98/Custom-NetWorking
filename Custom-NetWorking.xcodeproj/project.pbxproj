@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0747F2A2B5C3DC70047BA1E /* WebSocketEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0747F292B5C3DC70047BA1E /* WebSocketEvent.swift */; };
+		D0747F2C2B5C40040047BA1E /* FoundationWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0747F2B2B5C40040047BA1E /* FoundationWebSocket.swift */; };
 		D089F1A12B52F706000507A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089F1A02B52F706000507A7 /* AppDelegate.swift */; };
 		D089F1A32B52F706000507A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089F1A22B52F706000507A7 /* SceneDelegate.swift */; };
 		D089F1A52B52F706000507A7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089F1A42B52F706000507A7 /* ViewController.swift */; };
@@ -92,6 +94,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D0747F292B5C3DC70047BA1E /* WebSocketEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketEvent.swift; sourceTree = "<group>"; };
+		D0747F2B2B5C40040047BA1E /* FoundationWebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationWebSocket.swift; sourceTree = "<group>"; };
 		D089F19D2B52F706000507A7 /* Custom-NetWorking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Custom-NetWorking.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D089F1A02B52F706000507A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D089F1A22B52F706000507A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -168,6 +172,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D0747F262B5C3B940047BA1E /* HTTP */ = {
+			isa = PBXGroup;
+			children = (
+				D089F1F12B52FC3C000507A7 /* Core */,
+			);
+			path = HTTP;
+			sourceTree = "<group>";
+		};
+		D0747F272B5C3BAB0047BA1E /* StompSocket */ = {
+			isa = PBXGroup;
+			children = (
+				D0747F282B5C3D660047BA1E /* WebSocket */,
+			);
+			path = StompSocket;
+			sourceTree = "<group>";
+		};
+		D0747F282B5C3D660047BA1E /* WebSocket */ = {
+			isa = PBXGroup;
+			children = (
+				D0747F292B5C3DC70047BA1E /* WebSocketEvent.swift */,
+				D0747F2B2B5C40040047BA1E /* FoundationWebSocket.swift */,
+			);
+			path = WebSocket;
+			sourceTree = "<group>";
+		};
 		D089F1942B52F706000507A7 = {
 			isa = PBXGroup;
 			children = (
@@ -226,9 +255,10 @@
 		D089F1D62B52FC06000507A7 /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
+				D0747F272B5C3BAB0047BA1E /* StompSocket */,
+				D0747F262B5C3B940047BA1E /* HTTP */,
 				D0F3A4E92B56D8A400FA7EAB /* Model */,
 				D089F20B2B5323D5000507A7 /* Remote */,
-				D089F1F12B52FC3C000507A7 /* Core */,
 				D089F1D72B52FC06000507A7 /* DataSource.h */,
 			);
 			path = DataSource;
@@ -527,6 +557,7 @@
 				D089F2082B5317CC000507A7 /* CommonResponse.swift in Sources */,
 				D089F1F32B52FCCC000507A7 /* HttpMethod.swift in Sources */,
 				D089F1F52B5302D2000507A7 /* ApiServiceEndpoint.swift in Sources */,
+				D0747F2C2B5C40040047BA1E /* FoundationWebSocket.swift in Sources */,
 				D0F3A4E62B56D7FF00FA7EAB /* Repository.swift in Sources */,
 				D089F20A2B531889000507A7 /* Cancellable.swift in Sources */,
 				D089F2022B5316DC000507A7 /* HTTPResponse.swift in Sources */,
@@ -535,6 +566,7 @@
 				D089F1F72B5305B0000507A7 /* URLRequestBuilder.swift in Sources */,
 				D0F3A4EB2B56D8B800FA7EAB /* WeatherModel.swift in Sources */,
 				D089F2002B5315B1000507A7 /* HttpStatusCode.swift in Sources */,
+				D0747F2A2B5C3DC70047BA1E /* WebSocketEvent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
