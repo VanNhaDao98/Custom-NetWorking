@@ -8,7 +8,7 @@
 import Foundation
 
 @available(iOS 13.0, macOS 10.15, *)
-public class FoundationWebSocket: NSObject, WebSocketProtocol, URLSessionWebSocketDelegate {
+open class FoundationWebSocket: NSObject, WebSocketProtocol, URLSessionWebSocketDelegate {
     
     private var task: URLSessionWebSocketTask?
     
@@ -25,6 +25,7 @@ public class FoundationWebSocket: NSObject, WebSocketProtocol, URLSessionWebSock
     public func connect(request: URLRequest) {
         task = session.webSocketTask(with: request)
         task?.resume()
+        observerMessage()
     }
     
     public func disconnect() {
@@ -56,7 +57,7 @@ public class FoundationWebSocket: NSObject, WebSocketProtocol, URLSessionWebSock
             if let error = error {
                 print("[FoundationWebSocket] Error send ping: \(error)")
             } else {
-                print("[FoundationWebSocket] Received ping)")
+                print("[FoundationWebSocket] Received p0ng)")
             }
         })
     }
@@ -91,6 +92,13 @@ public class FoundationWebSocket: NSObject, WebSocketProtocol, URLSessionWebSock
             case .failure(let failure):
                 print("[FoundationWebSocket] Receive error: \(failure)")
                 self.eventListener?(.error(error: failure))
+            }
+            
+            // completionHandler is removed right after receive message
+            // so we have to observe message again every time.
+            
+            if self.task?.state == .running {
+                self.observerMessage()
             }
         })
     }
