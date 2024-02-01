@@ -9,20 +9,16 @@ import UIKit
 import DataSource
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Repository.shared.weather.getWeather { result in
-            switch result {
-            case .success(let success):
-                print(success.data as WeatherModel)
-            case .failure(let failure):
-                print(failure)
-            }
-        }
     }
 
-
+    @IBAction func didTapButton(_ sender: Any) {
+      
+    }
+    
 }
+
 
